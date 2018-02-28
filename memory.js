@@ -8,11 +8,11 @@ var space="";
 var pack=[];
 var leaderboard=[];
 var hide=[];
-$(document).ready(function () {
-    $('.button').click(function () {
-        startGame()
-    });
+
+$('.button').click(function () {
+    startGame()
 });
+
 function startGame() {
     desk = [];
     pack = [...cards,...cards];
