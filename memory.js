@@ -1,7 +1,7 @@
-var cards  = ["ciri","geralt","jaskier","iorweth","triss","yen",];
+var cards  = ["ciri","geralt","jaskier","iorweth","triss","yen"];
 var oneVisible = false;
 var turnCounter = 0;
-var visible_nr, pairsLeft ,card ,lockCard ,desk ,flip, back, back2,front,front2;
+var visible_nr, pairsLeft ,card ,lockCard ,desk ,flip, back, back2;
 var lock = false;
 var chosen = [];
 var space="";
@@ -48,8 +48,8 @@ function revealCard(nr) {
 }
 function showCard(nr) {
     var obraz = "url(img/"+desk[nr]+".png)";
-    $('#'+nr).addClass('flipped');
-    $(back).css('background-image', obraz);
+    $('#'+nr).addClass('flip');
+    $(back).css('background-image',obraz).css('display','flex');
     if(oneVisible == false) {
         firstCard(nr)
     }else{
@@ -62,13 +62,11 @@ function firstCard(nr) {
     lock=false;
     lockCard=nr;
     back2 = back;
-    front2=front;
 }
 function secondCard(nr) {
-    hide.push(front,front2);
     chosen.push(nr, visible_nr);
     if(desk[visible_nr] === desk[nr]){
-        setTimeout(function () {hide2cards(chosen)}, 1500);
+        setTimeout(function () {hide2cards(chosen)}, 1000);
     }else{
         setTimeout(function () {restore2cards(chosen)},1000);
     }
@@ -78,9 +76,6 @@ function secondCard(nr) {
     lockCard=null;
 }
 function hide2cards(array) {
-    // $(hide).each(function() {
-    //     $(this).css('opacity','0');
-    // });
     array.forEach(hideCard);
     lock = false;
     pairsLeft--;
@@ -96,7 +91,7 @@ function restore2cards(array) {
     clear();
 }
 function restoreCard(nr) {
-    $('#'+nr).removeClass('flipped');
+    $('#'+nr).removeClass('flip');
 }
 function done() {
     if(pairsLeft == 0) {
@@ -109,14 +104,13 @@ function done() {
 }
 function clear() {
     chosen.splice(0,4);
-    hide.splice(0,4);
 }
 function topScore() {
     leaderboard=leaderboard.concat(turnCounter);
     leaderboard.sort(function(a, b){return a - b});
     var leaderboards="";
     for (i=0; i < leaderboard.length;i++) {
-        leaderboards=leaderboards.concat("<br>"+leaderboard[i]);
+        leaderboards+="<br>"+leaderboard[i];
     }
     $('.leaderboards').html('Top scores'+leaderboards);
 }
