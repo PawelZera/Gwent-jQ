@@ -20,7 +20,7 @@ function startGame() {
     space = [];
     pairsLeft = 6;
     makeDesk();
-    sec=min=0;
+    sec=min=showSec=showSec=0;
     stopwatch();
     $(document).ready(function () {
         $(".front").click(function () {
@@ -98,7 +98,7 @@ function restoreCard(nr) {
 function done() {
     if(pairsLeft == 0) {
         stopTime();
-        $('.board').html('<h1>You WIN!<br>Done in '+turnCounter+' turns</h1><br><div class="button">Restart ?</div>');
+        $('.board').html('<h1>You WIN!<br>Done in '+turnCounter+' turns and '+showMin+':'+showSec+'</h1><br><div class="button">Restart ?</div>');
         topScore();
         $('.button').click(function () {startGame()});
     }
