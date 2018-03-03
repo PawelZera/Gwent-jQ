@@ -1,7 +1,7 @@
 var cards  = ["ciri","geralt","jaskier","iorweth","triss","yen"];
 var oneVisible = false;
 var turnCounter = 0;
-var visible_nr, pairsLeft ,card ,lockCard ,desk ,flip, back, back2;
+var visible_nr,pairsLeft,card,lockCard,desk,flip,back,back2,sec,min,interval,showSec,showMin;
 var lock = false;
 var chosen = [];
 var space="";
@@ -16,10 +16,12 @@ $('.button').click(function () {
 function startGame() {
     desk = [];
     pack = [...cards,...cards];
-    turnCounter = 0
+    turnCounter = 0;
     space = [];
-    pairsLeft = 6
+    pairsLeft = 6;
     makeDesk();
+    sec=min=0;
+    stopwatch();
     $(document).ready(function () {
         $(".front").click(function () {
             flip = this.parentNode.id;
@@ -66,7 +68,7 @@ function firstCard(nr) {
 function secondCard(nr) {
     chosen.push(nr, visible_nr);
     if(desk[visible_nr] === desk[nr]){
-        setTimeout(function () {hide2cards(chosen)}, 1000);
+        setTimeout(function () {hide2cards(chosen)}, 800);
     }else{
         setTimeout(function () {restore2cards(chosen)},1000);
     }
@@ -95,11 +97,10 @@ function restoreCard(nr) {
 }
 function done() {
     if(pairsLeft == 0) {
+        stopTime();
         $('.board').html('<h1>You WIN!<br>Done in '+turnCounter+' turns</h1><br><div class="button">Restart ?</div>');
         topScore();
-        $(document).ready(function() {
-            $('.button').click(function () {startGame()});
-        });
+        $('.button').click(function () {startGame()});
     }
 }
 function clear() {
@@ -110,7 +111,48 @@ function topScore() {
     leaderboard.sort(function(a, b){return a - b});
     var leaderboards="";
     for (i=0; i < leaderboard.length;i++) {
-        leaderboards+="<br>"+leaderboard[i];
+        leaderboards+="<br>"+leaderboard[i]+" - "+showMin+":"+showSec;
     }
     $('.leaderboards').html('Top scores'+leaderboards);
+}
+function stopwatch() {
+    interval=setInterval(seconds,1000);
+}
+function seconds() {
+    sec+=1;
+    if(sec==60){
+        sec=0;
+
+        minutes();
+    }
+    set();
+}
+function minutes() {
+    min+=1;
+}
+function set() {
+    if (sec<10){
+        if(min<10){
+            showMin="0"+min;
+            showSec="0"+sec;
+        }else{
+            showMin=min;
+            showSec="0"+sec;
+        }
+    }else{
+        if(min<10){
+            showMin="0"+min;
+            showSec=sec;
+        }else{
+            showMin=min;
+            showSec=sec;
+        }
+    }
+    time();
+}
+function time() {
+    $('.stopWatch').html(showMin+":"+showSec);
+}
+function stopTime() {
+    clearInterval(interval);
 }
