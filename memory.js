@@ -1,10 +1,10 @@
 var cards  = ["ciri","geralt","jaskier","iorweth","triss","yen"];
 var oneVisible = false;
 var turnCounter = 0;
-var visible_nr,pairsLeft,card,lockCard,desk,flip,back,back2,sec,min,interval,showSec,showMin;
+var visible_nr,pairsLeft,card,lockCard,desk,flip,back,back2,secondsLeft,minutesLeft,interval;
 var lock = false;
 var chosen = [];
-var space="";
+var space=[];
 var pack=[];
 var leaderboard=[];
 var hide=[];
@@ -12,7 +12,6 @@ var hide=[];
 $('.button').click(function () {
     startGame()
 });
-
 function startGame() {
     desk = [];
     pack = [...cards,...cards];
@@ -20,16 +19,9 @@ function startGame() {
     space = [];
     pairsLeft = 6;
     makeDesk();
-    sec=min=showSec=showSec=0;
-    stopwatch();
-    $(document).ready(function () {
-        $(".front").click(function () {
-            flip = this.parentNode.id;
-            front=this;
-            back=this.nextSibling;
-            revealCard(flip);
-        })
-    });
+    secondsLeft=0;
+    startTime();
+    clicked();
 }
 function makeDesk() {
     for (x = pack.length - 1; x >= 0; x--) {
@@ -98,7 +90,7 @@ function restoreCard(nr) {
 function done() {
     if(pairsLeft == 0) {
         stopTime();
-        $('.board').html('<h1>You WIN!<br>Done in '+turnCounter+' turns and '+showMin+':'+showSec+'</h1><br><div class="button">Restart ?</div>');
+        $('.board').html('<h1>You WIN!<br>Done in '+turnCounter+' turns and '+('0'+minutesLeft).slice(-2) + ':' + ('0' + (secondsLeft - minutesLeft * 60)).slice(-2)+'</h1><br><div class="button">Restart ?</div>');
         topScore();
         $('.button').click(function () {startGame()});
     }
@@ -115,44 +107,23 @@ function topScore() {
     }
     $('.leaderboards').html('Top scores'+leaderboards);
 }
+function startTime() {
+    interval=setInterval(stopwatch,1000);
+}
 function stopwatch() {
-    interval=setInterval(seconds,1000);
+    ++secondsLeft;
+    minutesLeft = Math.floor(secondsLeft / 60);
+    $('.stopwatch').html(('0'+minutesLeft).slice(-2) + ':' + ('0' + (secondsLeft - minutesLeft * 60)).slice(-2));
 }
-function seconds() {
-    sec+=1;
-    if(sec==60){
-        sec=0;
 
-        minutes();
-    }
-    set();
-}
-function minutes() {
-    min+=1;
-}
-function set() {
-    if (sec<10){
-        if(min<10){
-            showMin="0"+min;
-            showSec="0"+sec;
-        }else{
-            showMin=min;
-            showSec="0"+sec;
-        }
-    }else{
-        if(min<10){
-            showMin="0"+min;
-            showSec=sec;
-        }else{
-            showMin=min;
-            showSec=sec;
-        }
-    }
-    time();
-}
-function time() {
-    $('.stopWatch').html(showMin+":"+showSec);
-}
 function stopTime() {
     clearInterval(interval);
+}
+function clicked() {
+    $(".front").click(function () {
+        flip = this.parentNode.id;
+        front=this;
+        back=this.nextSibling;
+        revealCard(flip);
+    });
 }
