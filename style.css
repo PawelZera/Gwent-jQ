@@ -23,11 +23,13 @@ h1 {
     text-align: center;
     letter-spacing: 5px;
     margin: 5px 0px;
+    display: block;
 }
 p {
     text-align: center;
     margin: 5px 0px;
     letter-spacing: 2px;
+    display: block;
 }
 .board {
     width: 600px;
