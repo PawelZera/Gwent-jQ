@@ -5,6 +5,8 @@ body {
     font-family: 'Lobster', sans-serif;
     font-size: 28px;
     text-shadow: 2px 2px black;
+    min-width: min-content;
+    min-width: min-content;
 }
 
 a:link    { color: #209781; text-decoration: none; }
